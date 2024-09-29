@@ -3,7 +3,7 @@
 import GoBack from "@/app/components/GoBack";
 import { getRandomNumberInRange } from "@/utils";
 import { useEffect, useState } from "react";
-import { BsPause, BsPauseCircle, BsPauseCircleFill, BsPlay, BsPlayCircle, BsPlayCircleFill } from "react-icons/bs";
+import { BsPauseCircle, BsPauseCircleFill, BsPlayCircle, BsPlayCircleFill } from "react-icons/bs";
 
 const getRandomNumbers = (amount: number, figuresRange: number[]) => {
     let numbers = [];
@@ -51,8 +51,8 @@ export default function Page() {
 }
 
 function Block({ value }: { value: number }) {
-    const [audio1, setAudio1] = useState(new Audio(`/ritmos/${value}.mp3`));
-    const [audio2, setAudio2] = useState(new Audio(`/ritmos/uno/${value}.mp3`));
+    const [audio1, setAudio1] = useState<HTMLAudioElement | undefined>();
+    const [audio2, setAudio2] = useState<HTMLAudioElement | undefined>();
     const [isPlaying1, setIsPlaying1] = useState(false);
     const [isPlaying2, setIsPlaying2] = useState(false);
 
@@ -90,14 +90,14 @@ function Block({ value }: { value: number }) {
                 isPlaying1 ? (
                     <BsPauseCircleFill className="absolute top-2 right-2 text-2xl text-white cursor-pointer hover:scale-105" onClick={() => {
                         if (isPlaying1) {
-                            audio1.pause();
+                            audio1?.pause();
                             setIsPlaying1(false);
                         }
                     }} />
                 ) : (
                     <BsPlayCircleFill className="absolute top-2 right-2 text-2xl text-white cursor-pointer hover:scale-105" onClick={() => {
                         if (!isPlaying1) {
-                            audio1.play();
+                            audio1?.play();
                             setIsPlaying1(true);
                         }
                     }} />
@@ -108,14 +108,14 @@ function Block({ value }: { value: number }) {
                 isPlaying2 ? (
                     <BsPauseCircle className="absolute top-2 left-2 text-2xl text-white cursor-pointer hover:scale-105" onClick={() => {
                         if (isPlaying2) {
-                            audio2.pause();
+                            audio2?.pause();
                             setIsPlaying2(false);
                         }
                     }} />
                 ) : (
                     <BsPlayCircle className="absolute top-2 left-2 text-2xl text-white cursor-pointer hover:scale-105" onClick={() => {
                         if (!isPlaying2) {
-                            audio2.play();
+                            audio2?.play();
                             setIsPlaying2(true);
                         }
                     }} />
