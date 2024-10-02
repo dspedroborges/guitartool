@@ -15,7 +15,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Guitar Tool",
-  description: "App para praticar posições no braço do violão.",
+  description: "Guitar Tool é um aplicativo voltado para estudantes de violão e guitarra, mas também para música de modo geral. É possível encontrar inúmeras ferramentas que ajudam desde o estudo da sequência das notas, passando por leitura rítmica e reconhecimento de tons, intervalos, etc.",
 };
 
 export default function RootLayout({
