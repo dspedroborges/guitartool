@@ -1,10 +1,7 @@
 "use client";
 
-import AudioPlayer from "@/app/components/AudioPlayer";
 import Quiz from "@/app/components/Quiz";
-import { getNoteBySimilarity, shuffleArray } from "@/utils";
-import { useEffect, useState } from "react";
-import { BsPause, BsPlay } from "react-icons/bs";
+import { fisherYatesShuffle } from "@/utils";
 
 type QuestionType = {
     question: string;
@@ -14,7 +11,7 @@ type QuestionType = {
     duration: number;
 }
 
-const notes: string[] = ["C", "D", "E", "F", "G", "A", "B"];
+const notes: string[] = fisherYatesShuffle(["C", "D", "E", "F", "G", "A", "B"]);
 
 const questions: QuestionType[] = [];
 

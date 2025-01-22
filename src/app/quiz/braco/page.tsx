@@ -15,6 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     setRandomNote([strings === -1 ? getRandomNumberInRange(0, guitarNotes.length - 1) : strings, getRandomNumberInRange(0, guitarNotes[0].length - 1)]);
+    refInput.current?.focus();
   }, []);
 
   return (
@@ -82,7 +83,7 @@ export default function Home() {
         }
 
       }} className="fixed bottom-0 left-0 w-full flex h-[50px]">
-        <input ref={refInput} type="text" id="answer" onChange={(e) => setAnswer(e.target.value)} className="p-2 text-lg w-full h-full border-4 bg-gray-950 text-white border-blue-600 outline-blue-700" />
+        <input ref={refInput} type="text" id="answer" onChange={(e) => setAnswer(e.target.value)} className="focus:outline-none p-2 text-lg w-full h-full border-4 bg-gray-950 text-white border-blue-600 outline-blue-700" />
         <button className="bg-blue-600 hover:bg-blue-700 block w-full text-white uppercase ring-blue-500 basis-1/2">Tentar</button>
       </form>
     </>
