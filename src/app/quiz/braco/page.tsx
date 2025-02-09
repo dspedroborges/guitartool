@@ -7,26 +7,42 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const [randomNote, setRandomNote] = useState([0, 0]);
-  const [answer, setAnswer] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [isRightAnswer, setIsRightAnswer] = useState<number>(-1);
   const refInput = useRef<HTMLInputElement>(null);
   const [strings, setStrings] = useState(-1);
+  const [stats, setStats] = useState({
+    totalRight: 0,
+    totalTried: 0,
+  });
 
   useEffect(() => {
     setRandomNote([strings === -1 ? getRandomNumberInRange(0, guitarNotes.length - 1) : strings, getRandomNumberInRange(0, guitarNotes[0].length - 1)]);
     refInput.current?.focus();
   }, []);
 
+  const handleAnswer = (a: string) => {
+    let r = "";
+    if (a.length > 1) {
+      let x = a.slice(1);
+      r = a.charAt(0).toUpperCase() + x;
+    } else {
+      r = a.toUpperCase();
+    }
+    
+    return r;
+  }
+
   return (
     <>
       <GoBack/>
+      <p className="text-white text-center mb-2">Desempenho: {Number.isNaN(Math.round(stats.totalRight / stats.totalTried * 100)) ? 0 : Math.round(stats.totalRight / stats.totalTried * 100)}% </p>
       {
-        (isRightAnswer === 1) && <div className="fixed top-1/2 left-1/2 -translate-x-1/2 w-1/2 rounded-xl bg-blue-900 text-white p-2 text-center font-bold">Acertou!</div>
+        (isRightAnswer === 1) && <div className="animate-pulse z-50 fixed bottom-16 left-1/2 -translate-x-1/2 w-1/2 rounded-xl bg-blue-900 text-white p-2 text-center font-bold">Acertou!</div>
       }
 
       {
-        (isRightAnswer === 0) && <div className="fixed top-1/2 left-1/2 -translate-x-1/2 w-1/2 rounded-xl bg-red-900 text-white p-2 text-center font-bold">Errou. Era {history[history.length - 1].replace(/>.*/, '')}!</div>
+        (isRightAnswer === 0) && <div className="animate-pulse z-50 fixed bottom-16 left-1/2 -translate-x-1/2 w-1/2 rounded-xl bg-red-900 text-white p-2 text-center font-bold">Errou. Era {history[history.length - 1].replace(/>.*/, '')}!</div>
       }
 
       <div className="w-full">
@@ -66,15 +82,20 @@ export default function Home() {
         <option value="5">E</option>
       </select>
 
-      <form onSubmit={(e) => {
-        e.preventDefault();
+      <form action={(formData: FormData) => {
+        const answer = handleAnswer(formData.get("answer") as string);
         if (refInput.current) {
-
           if (getNoteBySimilarity(answer, [guitarNotes[randomNote[0]][randomNote[1]]]) !== -1) {
             setIsRightAnswer(1);
+            setStats({ totalTried: stats.totalTried + 1, totalRight: stats.totalRight + 1})
           } else {
             setIsRightAnswer(0);
+            setStats({ ...stats, totalTried: stats.totalTried + 1 })
           }
+
+          setTimeout(() => {
+            setIsRightAnswer(-1);
+          }, 2000);
 
           refInput.current.focus();
           refInput.current.value = "";
@@ -83,7 +104,7 @@ export default function Home() {
         }
 
       }} className="fixed bottom-0 left-0 w-full flex h-[50px]">
-        <input ref={refInput} type="text" id="answer" onChange={(e) => setAnswer(e.target.value)} className="focus:outline-none p-2 text-lg w-full h-full border-4 bg-gray-950 text-white border-blue-600 outline-blue-700" />
+        <input ref={refInput} type="text" id="answer" name="answer" className="focus:outline-none p-2 text-lg w-full h-full border-4 bg-gray-950 text-white border-blue-600 outline-blue-700" />
         <button className="bg-blue-600 hover:bg-blue-700 block w-full text-white uppercase ring-blue-500 basis-1/2">Tentar</button>
       </form>
     </>
