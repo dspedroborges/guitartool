@@ -11,32 +11,32 @@ type QuestionType = {
     duration: number;
 }
 
-const notes: string[] = fisherYatesShuffle(["C", "D", "E", "F", "G", "A", "B"]);
-
+const notesShuffled: string[] = fisherYatesShuffle(["C", "D", "E", "F", "G", "A", "B"]);
+const notesUnshuffled = ["C", "D", "E", "F", "G", "A", "B"];
 const questions: QuestionType[] = [];
 
 // Perguntas sobre a próxima nota
-for (let i = 0; i < notes.length; i++) {
-    const note = notes[i];
-    const nextNote = notes[(i + 1) % notes.length];
+for (let i = 0; i < notesUnshuffled.length; i++) {
+    const note = notesUnshuffled[i];
+    const nextNote = notesUnshuffled[(i + 1) % notesUnshuffled.length];
 
     questions.push({
         question: "Depois de " + note,
         answer: nextNote,
-        alternatives: notes,
+        alternatives: notesShuffled,
         files: [],
         duration: 3
     });
 }
 
 // Perguntas sobre a nota anterior
-for (let i = 0; i < notes.length; i++) {
-    const note = notes[i];
-    const prevNote = notes[(i - 1 + notes.length) % notes.length];
+for (let i = 0; i < notesUnshuffled.length; i++) {
+    const note = notesUnshuffled[i];
+    const prevNote = notesUnshuffled[(i - 1 + notesUnshuffled.length) % notesUnshuffled.length];
     questions.push({
         question: "Antes de " + note,
         answer: prevNote,
-        alternatives: notes,
+        alternatives: notesShuffled,
         files: [],
         duration: 3
     });
